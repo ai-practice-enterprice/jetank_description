@@ -158,6 +158,7 @@
 
     <xacro:include filename="jetank_links.xacro"  />
     <xacro:include filename="jetank_joints.xacro"  />
+    <xacro:include filename="jetank_controllers.xacro"  />
     <xacro:include filename="jetank_sensors.xacro"  />
 
 
