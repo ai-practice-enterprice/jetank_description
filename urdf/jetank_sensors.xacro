@@ -1,107 +1,5 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="jetank">
-	<!-- other of kinds of systems are 'actuator' and 'sensor' but 'system' is more general -->
-
-	<!--
-		inside the ros2_control tag we define a plugin inside the <hardware> tag to say
-		which plugins to load in Gazebo to simulate a real hardware interface
-		further we need to define the joints that are controllable.
-		In our case we have:
-		- the wheels of the Jetank
-		- the base of the arm
-		- the 2 servo's
-		- the gripper
-		- (perhaps the camera holder)
-		each joint will have state_interfaces
-		and command intefaces. That being either
-		position or velocity
-	-->
-	<ros2_control name="jetank_controller" type="system">
-		<hardware>
-			<plugin>gz_ros2_control/GazeboSimSystem</plugin>
-		</hardware>
-
-		<joint name="turn_ARM">
-			<command_interface name="position"/>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="DRIVING_WHEEL_LEFT">
-			<command_interface name="velocity">
-				<param name="min">-10</param>
-				<param name="max">10</param>
-			</command_interface>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="DRIVING_WHEEL_RIGHT">
-			<command_interface name="velocity">
-				<param name="min">-10</param>
-				<param name="max">10</param>
-			</command_interface>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="FREE_WHEEL_LEFT">
-			<command_interface name="velocity">
-				<param name="min">-10</param>
-				<param name="max">10</param>
-			</command_interface>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="FREE_WHEEL_RIGHT">
-			<command_interface name="velocity">
-				<param name="min">-10</param>
-				<param name="max">10</param>
-			</command_interface>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="SERVO_UPPER_">
-			<command_interface name="position"/>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="SERVO_LOWER_">
-			<command_interface name="position"/>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="GRIPPER_LEFT_1">
-			<command_interface name="position"/>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="GRIPPER_RIGHT_1">
-			<command_interface name="position"/>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="GRIPPER_RIGHT_2">
-			<command_interface name="position"/>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-		<joint name="GRIPPER_LEFT_2">
-			<command_interface name="position"/>
-			<state_interface name="position"/>
-			<state_interface name="velocity"/>
-		</joint>
-
-
-	</ros2_control>
-
 	<!-- All other sensors such as Camera's, LiDAR's, IMU , etc... -->
 
 	<!--Dummy link -->
@@ -154,6 +52,14 @@
 			<parameters>
 				$(find jetank_description)/config/jetank_controllers.yaml
 			</parameters>
+			<controller_manager_prefix_node_name>$(arg namespace)/controller_manager</controller_manager_prefix_node_name>
+			<ros>
+				<namespace>$(arg namespace)</namespace>
+				<remapping>/robot_description:=robot_description</remapping>
+				<remapping>/clock:=clock</remapping>
+				<remapping>/tf:=tf</remapping>
+				<remapping>/tf_static:=tf_static</remapping>
+			</ros>
 		</plugin>
 
 	</gazebo>

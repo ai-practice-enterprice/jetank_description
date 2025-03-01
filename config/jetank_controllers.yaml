@@ -1,4 +1,4 @@
-controller_manager:
+/**/controller_manager:
   ros__parameters:
     update_rate: 50
 
@@ -27,7 +27,7 @@ controller_manager:
 
 ## here are the parameters of each controller ##
 
-diff_drive_controller:
+/**/diff_drive_controller:
   ros__parameters:
     publish_rate: 20.0
     left_wheel_names: ["DRIVING_WHEEL_LEFT","FREE_WHEEL_LEFT"]
@@ -70,7 +70,7 @@ arm_controller:
       # constraints:
       # no constraints yet
 
-gripper_controller:
+/**/gripper_controller:
   ros__parameters:
     joints:
       - GRIPPER_LEFT_1
