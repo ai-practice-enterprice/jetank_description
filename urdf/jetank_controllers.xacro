@@ -16,6 +16,8 @@
 		and command intefaces. That being either
 		position or velocity
 	-->
+	<!-- gz_ros2_control runs the controller_manager for you however this can come with some issues later when trying to remap -->
+	<!-- https://robotics.stackexchange.com/questions/103767/class-gazebo-ros2-control-gazebosystem-with-base-class-type-hardware-interface -->
 	<ros2_control name="jetank_controller" type="system">
 		<hardware>
 			<plugin>gz_ros2_control/GazeboSimSystem</plugin>

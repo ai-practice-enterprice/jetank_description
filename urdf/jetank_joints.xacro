@@ -14,35 +14,41 @@
             <xacro:if value="${ joint_type == 'revolute' }">
                 <xacro:insert_block name="limit"/>
             </xacro:if>
+                    
         </joint>
     </xacro:macro>
 
     <!-- ================ JOINTS ================ -->
-
-
-    <xacro:joint joint_name="base_link_rigid_ANTENNA_L_BASE_JOINT" parent_name="base_link" child_name="ANTENNA_L" joint_type="fixed"> 
-        <origin xyz="0.0718 -0.0442 0.0576" rpy="${PI/2} 0 -${PI}" />
-        <axis/>
-        <limit/>
-    </xacro:joint>
-
-    <xacro:joint joint_name="base_link_rigid_ANTENNA_R_BASE_JOINT" parent_name="base_link" child_name="ANTENNA_R" joint_type="fixed">
-        <origin xyz="0.0718 0.0442 0.0576" rpy="-${PI/2} 0 -${PI}" />   
-        <axis/>
-        <limit/>
-    </xacro:joint>
-
-    <xacro:joint joint_name="base_link_rigid_BEARING_BASE_JOINT" parent_name="base_link" child_name="BEARING" joint_type="fixed">
-        <origin xyz="-0.0445 0 0.0767" rpy="${PI} 0 0.0036" />   
-        <axis/>
-        <limit/>
-    </xacro:joint>
+    
+    <!-- SERVO's -->
     <xacro:joint joint_name="turn_ARM" parent_name="BEARING" child_name="ARM_LOWER" joint_type="revolute">
         <origin xyz="0 0.0002 -0.0080" rpy="${PI} 0 0" />   
         <axis xyz="0 -0.0021 1" />
         <limit lower="-${PI/2}" upper="${PI/2}" effort="1000000" velocity="1000000" />
     </xacro:joint>
-    <xacro:joint joint_name="FREE_WHEEL_LEFT" parent_name="base_link" child_name="FREE_WHEEL_L" joint_type="continuous">
+    <xacro:joint joint_name="SERVO_UPPER_" parent_name="ARM_MIDDLE" child_name="SERVO_UPPER" joint_type="revolute">
+        <origin xyz="-0.0672 0.0672 0" rpy="${PI/2} 0 0" /> 
+        <axis xyz="-0.0036 1 0.0021" />
+        <limit lower="-2" upper="1" effort="1000000" velocity="1000000" />
+    </xacro:joint>
+    <xacro:joint joint_name="SERVO_LOWER_" parent_name="SERVO_LOWER" child_name="ARM_MIDDLE" joint_type="revolute">
+        <origin xyz="-0.0271 0 0.0184" rpy="0 0 0" /> 
+        <axis xyz="-0.0036 -0.0021 1" />
+        <limit lower="0" upper="${PI/4}" effort="1000000" velocity="1000000" />
+    </xacro:joint>
+
+    <!-- WHEELS -->
+    <xacro:joint joint_name="DRIVING_WHEEL_RIGHT" parent_name="base_link" child_name="DRIVER_WHEEL_R" joint_type="continuous">
+        <origin xyz="0.0560 0.0442 0.0133" rpy="-${PI/2} 0 -${PI}" />   
+        <axis xyz="0.0036 0.0021 -1" />
+        <limit/>
+    </xacro:joint>
+    <xacro:joint joint_name="DRIVING_WHEEL_LEFT" parent_name="base_link" child_name="DRIVER_WHEEL_L" joint_type="continuous">
+        <origin xyz="-0.0625 -0.0442 0.0133" rpy="${PI/2} 0 ${PI}" /> 
+        <axis xyz="-0.0036 0.0021 1" />
+        <limit/>
+    </xacro:joint>
+        <xacro:joint joint_name="FREE_WHEEL_LEFT" parent_name="base_link" child_name="FREE_WHEEL_L" joint_type="continuous">
         <origin xyz="0.0560 -0.0442 0.0133" rpy="${PI/2} 0 -${PI}" /> 
         <axis xyz="-0.0036 0.0021 1" />
         <limit/>
@@ -50,6 +56,45 @@
     <xacro:joint joint_name="FREE_WHEEL_RIGHT" parent_name="base_link" child_name="FREE_WHEEL_R" joint_type="continuous">
         <origin xyz="-0.0625 0.0442 0.0133" rpy="-${PI/2} 0 -${PI}" />   
         <axis xyz="0.0036 0.0021 -1" />
+        <limit/>
+    </xacro:joint>
+    
+    <!-- GRIPPER -->
+    <xacro:joint joint_name="GRIPPER_RIGHT_2" parent_name="GRIPPER_R1" child_name="GRIPPER_R2" joint_type="revolute">
+        <origin xyz="-0.025 0 -0.0155" rpy="${PI} -${PI/4 - 0.09} 0" /> 
+        <axis xyz="-0.3503 -0.0032 0.9366" />
+        <limit lower="0" upper="${PI/4}" effort="1000000" velocity="1000000" />
+    </xacro:joint>
+    <xacro:joint joint_name="GRIPPER_LEFT_2" parent_name="GRIPPER_L1" child_name="GRIPPER_L2" joint_type="revolute">
+        <origin xyz="-0.025 0 -0.0155" rpy="0 -${PI/4 - 0.09} 0" />   
+        <axis xyz="0.3503 0.0032 0.9366" />
+        <limit lower="0" upper="${PI/4}" effort="1000000" velocity="1000000" />
+    </xacro:joint>
+    <xacro:joint joint_name="GRIPPER_RIGHT_1" parent_name="GRIPPER_BASE" child_name="GRIPPER_R1" joint_type="revolute">
+        <origin xyz="0.0419 0.0051 -0.0149" rpy="0 -0.0169 ${PI}" />
+        <axis xyz="-0.3503 -0.0032 0.9366" />
+        <limit lower="0" upper="${PI/4}" effort="1000000" velocity="1000000" />
+    </xacro:joint>
+    <xacro:joint joint_name="GRIPPER_LEFT_1" parent_name="GRIPPER_BASE" child_name="GRIPPER_L1" joint_type="revolute">
+        <origin xyz="0.0420 -0.0049 -0.0149" rpy="0 -0.0169 ${PI}" />
+        <axis xyz="0.3503 0.0032 -0.9366" />
+        <limit lower="0" upper="${PI/4}" effort="1000000" velocity="1000000" />
+    </xacro:joint>
+
+    <!-- fixed joints -->
+    <xacro:joint joint_name="base_link_rigid_ANTENNA_L_BASE_JOINT" parent_name="base_link" child_name="ANTENNA_L" joint_type="fixed"> 
+        <origin xyz="0.0718 -0.0442 0.0576" rpy="${PI/2} 0 -${PI}" />
+        <axis/>
+        <limit/>
+    </xacro:joint>
+    <xacro:joint joint_name="base_link_rigid_ANTENNA_R_BASE_JOINT" parent_name="base_link" child_name="ANTENNA_R" joint_type="fixed">
+        <origin xyz="0.0718 0.0442 0.0576" rpy="-${PI/2} 0 -${PI}" />   
+        <axis/>
+        <limit/>
+    </xacro:joint>
+    <xacro:joint joint_name="base_link_rigid_BEARING_BASE_JOINT" parent_name="base_link" child_name="BEARING" joint_type="fixed">
+        <origin xyz="-0.0445 0 0.0767" rpy="${PI} 0 0.0036" />   
+        <axis/>
         <limit/>
     </xacro:joint>
     <xacro:joint joint_name="CAM_HOLDER_rigid_CAMERA_CAMERA_HOLDER" parent_name="CAM_HOLDER" child_name="CAMERA" joint_type="fixed">
@@ -62,50 +107,10 @@
         <axis/>
         <limit/>
     </xacro:joint>
-    <xacro:joint joint_name="GRIPPER_LEFT_1" parent_name="GRIPPER_BASE" child_name="GRIPPER_L1" joint_type="revolute">
-        <origin xyz="0.0419 0.0051 -0.0149" rpy="0 -0.0169 ${PI}" />
-        <axis xyz="0.3503 0.0032 -0.9366" />
-        <limit lower="-${PI/4}" upper="0.0" effort="1000000" velocity="1000000" />
-    </xacro:joint>
-    <xacro:joint joint_name="GRIPPER_LEFT_2" parent_name="GRIPPER_L1" child_name="GRIPPER_L2" joint_type="revolute">
-        <origin xyz="-0.0281 0 -0.0104" rpy="${PI} 0 0" /> 
-        <axis xyz="-0.3503 0.0032 -0.9366" />
-        <limit lower="-${PI/4}" upper="0.0" effort="1000000" velocity="1000000" />
-    </xacro:joint>
-    <xacro:joint joint_name="SERVO_UPPER_" parent_name="ARM_MIDDLE" child_name="SERVO_UPPER" joint_type="revolute">
-        <origin xyz="-0.0672 0.0672 0" rpy="${PI/2} 0 0" /> 
-        <axis xyz="-0.0036 1 0.0021" />
-        <limit lower="-2" upper="1" effort="1000000" velocity="1000000" />
-    </xacro:joint>
-    <xacro:joint joint_name="SERVO_LOWER_" parent_name="SERVO_LOWER" child_name="ARM_MIDDLE" joint_type="revolute">
-        <origin xyz="-0.0271 0 0.0184" rpy="0 0 0" /> 
-        <axis xyz="-0.0036 -0.0021 1" />
-        <limit lower="0" upper="${PI/4}" effort="1000000" velocity="1000000" />
-    </xacro:joint>
     <xacro:joint joint_name="ARM_LOWER_Rigid_SERVO_LOWER_ARM_LOWER" parent_name="ARM_LOWER" child_name="SERVO_LOWER" joint_type="fixed">
         <origin xyz="0.0135 0.0200 0.0672" rpy="${PI/2} 0 0" />  
         <axis/>
         <limit/>
-    </xacro:joint>
-    <xacro:joint joint_name="DRIVING_WHEEL_RIGHT" parent_name="base_link" child_name="DRIVER_WHEEL_R" joint_type="continuous">
-        <origin xyz="0.0560 0.0442 0.0133" rpy="-${PI/2} 0 -${PI}" />   
-        <axis xyz="0.0036 0.0021 -1" />
-        <limit/>
-    </xacro:joint>
-    <xacro:joint joint_name="DRIVING_WHEEL_LEFT" parent_name="base_link" child_name="DRIVER_WHEEL_L" joint_type="continuous">
-        <origin xyz="-0.0625 -0.0442 0.0133" rpy="${PI/2} 0 ${PI}" /> 
-        <axis xyz="-0.0036 0.0021 1" />
-        <limit/>
-    </xacro:joint>
-    <xacro:joint joint_name="GRIPPER_RIGHT_2" parent_name="GRIPPER_R1" child_name="GRIPPER_R2" joint_type="revolute">
-        <origin xyz="-0.0281 0 -0.0105" rpy="0 0 0" />   
-        <axis xyz="0.3503 0.0032 -0.9366" />
-        <limit lower="-${PI/4}" upper="0" effort="1000000" velocity="1000000" />
-    </xacro:joint>
-    <xacro:joint joint_name="GRIPPER_RIGHT_1" parent_name="GRIPPER_BASE" child_name="GRIPPER_R1" joint_type="revolute">
-        <origin xyz="0.0420 -0.0049 -0.0149" rpy="0 -0.0169 ${PI}" />
-        <axis xyz="0.3503 0.0032 -0.9366" />
-        <limit lower="0" upper="${PI/4}" effort="1000000" velocity="1000000" />
     </xacro:joint>
     <xacro:joint joint_name="ARM_UPPER_rigid_GRIPPER_BASE_ARM_UPPER" parent_name="ARM_UPPER" child_name="GRIPPER_BASE" joint_type="fixed">
         <origin xyz="-0.0427 0.0080 -0.0203" rpy="-${PI/2} 0 -${PI}" />  

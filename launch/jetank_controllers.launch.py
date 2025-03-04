@@ -38,8 +38,8 @@ def generate_launch_description():
         namespace=robot_namespace,
         arguments=[
             'joint_state_broadcaster',
+            '--param-file',jetank_controllers_config,
             '--switch-timeout', '10',
-           
             ]
     )
     diff_drive_controller_spawner = Node(
@@ -50,8 +50,7 @@ def generate_launch_description():
             'diff_drive_controller',
             '--param-file',jetank_controllers_config,
             '--switch-timeout', '10',
-           
-            ]
+            ],
     )
     arm_controller_spawner = Node(
         package='controller_manager',
@@ -61,7 +60,6 @@ def generate_launch_description():
             'arm_controller',
             '--param-file',jetank_controllers_config,
             '--switch-timeout', '10',
-           
             ]
      )
     gripper_controller_spawner = Node(
@@ -72,7 +70,6 @@ def generate_launch_description():
             'gripper_controller',
             '--param-file',jetank_controllers_config,
             '--switch-timeout', '10',
-           
         ]
     )
 

@@ -49,8 +49,9 @@
     position_feedback: false
     open_loop: true
     enable_odom_tf: true
+    tf_frame_prefix_enable: false
 
-arm_controller:
+/**/arm_controller:
   ros__parameters:
     joints:
       - turn_ARM
