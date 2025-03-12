@@ -43,12 +43,9 @@
 	</gazebo>
 
 
-	<!--
-		required for Gazebo such that ros2_control can work.
-		We need to load a config file to tell what controllers to load
-	-->
+	<!-- required for Gazebo such that ros2_control can work. We need to load a config file to tell what controllers to load -->
 	<gazebo>
-		<plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+		<plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
 			<parameters>
 				$(find jetank_description)/config/jetank_controllers.yaml
 			</parameters>

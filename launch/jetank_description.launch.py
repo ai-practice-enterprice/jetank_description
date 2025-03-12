@@ -2,7 +2,7 @@ import os
 import xacro
 
 from launch import LaunchDescription
-from launch_ros.actions import Node , PushROSNamespace
+from launch_ros.actions import Node
 
 from ament_index_python.packages import get_package_share_directory
 
@@ -56,6 +56,8 @@ def generate_launch_description():
             output='screen',
             namespace=robot_namespace,
             parameters=[{
+                # NOTE: if you switch to gazebo ignition the parser might cause some problems and therefore some special characters are not allowed in the URDF files
+                # see => https://github.com/ros-controls/gazebo_ros2_control/issues/295 
                 'robot_description': ParameterValue(jetank_description,value_type=str),
                 'use_sim_time': use_sim_time,
             }],
