@@ -20,7 +20,7 @@
 	<!-- https://robotics.stackexchange.com/questions/103767/class-gazebo-ros2-control-gazebosystem-with-base-class-type-hardware-interface -->
 	<ros2_control name="jetank_controller" type="system">
 		<hardware>
-			<plugin>ign_ros2_control/IgnitionSystem</plugin>
+			<plugin>gazebo_ros2_control/GazeboSystem</plugin>
 		</hardware>
 
 		<joint name="turn_ARM">
