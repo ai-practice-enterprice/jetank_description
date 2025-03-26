@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="jetank">
+	<!-- other of kinds of systems are 'actuator' and 'sensor' but 'system' is more general -->
+
+	<!--
+		inside the ros2_control tag we define a plugin inside the hardware tag to say
+		which plugins to load in Gazebo to simulate a real hardware interface
+		further we need to define the joints that are controllable.
+		In our case we have
+		 	the wheels of the Jetank
+		 	the base of the arm
+		 	the 2 servos
+		 	the gripper
+		 	perhaps the camera holder
+		each joint will have state_interfaces
+		and command intefaces. That being either
+		position or velocity
+	-->
+	<!-- gz_ros2_control runs the controller_manager for you however this can come with some issues later when trying to remap -->
+	<!-- https://robotics.stackexchange.com/questions/103767/class-gazebo-ros2-control-gazebosystem-with-base-class-type-hardware-interface -->
+	<ros2_control name="jetank_controller" type="system">
+		<hardware>
+			<plugin>ign_ros2_control/IgnitionSystem</plugin>
+		</hardware>
+
+		<joint name="turn_ARM">
+			<command_interface name="position"/>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="DRIVING_WHEEL_LEFT">
+			<command_interface name="velocity">
+				<param name="min">-10</param>
+				<param name="max">10</param>
+			</command_interface>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="DRIVING_WHEEL_RIGHT">
+			<command_interface name="velocity">
+				<param name="min">-10</param>
+				<param name="max">10</param>
+			</command_interface>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="FREE_WHEEL_LEFT">
+			<command_interface name="velocity">
+				<param name="min">-10</param>
+				<param name="max">10</param>
+			</command_interface>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="FREE_WHEEL_RIGHT">
+			<command_interface name="velocity">
+				<param name="min">-10</param>
+				<param name="max">10</param>
+			</command_interface>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="SERVO_UPPER_">
+			<command_interface name="position"/>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="SERVO_LOWER_">
+			<command_interface name="position"/>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="GRIPPER_LEFT_1">
+			<command_interface name="position"/>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="GRIPPER_RIGHT_1">
+			<command_interface name="position"/>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="GRIPPER_RIGHT_2">
+			<command_interface name="position"/>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+		<joint name="GRIPPER_LEFT_2">
+			<command_interface name="position"/>
+			<state_interface name="position"/>
+			<state_interface name="velocity"/>
+		</joint>
+
+
+	</ros2_control>
+</robot>
