@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
-import rospy
+import rclpy
+from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
 import numpy as np
 
-class LineDetector:
+class LineDetector(Node):
     def __init__(self):
-        rospy.init_node('line_detector')
+        super().__init__('line_detector')
         self.bridge = CvBridge()
-        self.image_sub = rospy.Subscriber('/camera/image_raw', Image, self.image_callback)
+        
+        # ROS2 subscriber (note: topic name may need adjustment)
+        self.image_sub = self.create_subscription(
+            Image,
+            '/camera/image_raw',
+            self.image_callback,
+            10  # Queue size
+        )
         
         # YELLOW HSV RANGE
         self.lower_yellow = np.array([20, 100, 100])
@@ -33,7 +41,7 @@ class LineDetector:
     def image_callback(self, msg):
         try:
             # Convert ROS Image to OpenCV
-            cv_image = self.bridge.imgmsg_to_cv2(msg, "bgr8")
+            cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
             hsv = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
             
             # Create masks
@@ -54,9 +62,20 @@ class LineDetector:
             cv2.waitKey(1)
             
         except Exception as e:
-            rospy.logerr(f"Error: {e}")
+            self.get_logger().error(f"Error: {e}")
+
+def main(args=None):
+    rclpy.init(args=args)
+    detector = LineDetector()
+    
+    try:
+        rclpy.spin(detector)
+    except KeyboardInterrupt:
+        pass
+    
+    detector.destroy_node()
+    rclpy.shutdown()
+    cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    detector = LineDetector()
-    rospy.spin()
-    cv2.destroyAllWindows()
+    main()
