@@ -14,10 +14,14 @@ class LineDetector(Node):
         # ROS2 subscriber (note: topic name may need adjustment)
         self.image_sub = self.create_subscription(
             Image,
-            '/camera/image_raw',
+            'camera/image_raw',
             self.image_callback,
             10  # Queue size
         )
+        
+        # Publishers for detected lines
+        self.yellow_pub = self.create_publisher(Image, 'detected_lines/yellow', 10)
+        self.green_pub = self.create_publisher(Image, 'detected_lines/green', 10)
         
         # YELLOW HSV RANGE
         self.lower_yellow = np.array([20, 100, 100])
@@ -52,13 +56,24 @@ class LineDetector(Node):
             yellow_lines = self.detect_lines(yellow_mask)
             green_lines = self.detect_lines(green_mask)
             
-            # Draw lines
-            output = cv_image.copy()
-            self.draw_lines(output, yellow_lines, (0, 255, 255))  # Yellow (BGR)
-            self.draw_lines(output, green_lines, (0, 255, 0))       # Green
+            # Create separate images for each color
+            yellow_output = cv_image.copy()
+            green_output = cv_image.copy()
             
-            # Display
-            cv2.imshow('Detected Lines', output)
+            # Draw lines on respective images
+            self.draw_lines(yellow_output, yellow_lines, (0, 255, 255))  # Yellow (BGR)
+            self.draw_lines(green_output, green_lines, (0, 255, 0))      # Green
+            
+            # Convert back to ROS Image messages and publish
+            yellow_msg = self.bridge.cv2_to_imgmsg(yellow_output, encoding="bgr8")
+            green_msg = self.bridge.cv2_to_imgmsg(green_output, encoding="bgr8")
+            
+            self.yellow_pub.publish(yellow_msg)
+            self.green_pub.publish(green_msg)
+            
+            # for immediate testing purpose, can be removed once tested
+            cv2.imshow('Yellow Lines', yellow_output)
+            cv2.imshow('Green Lines', green_output)
             cv2.waitKey(1)
             
         except Exception as e:
